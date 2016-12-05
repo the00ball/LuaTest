@@ -12,15 +12,15 @@ const char CLuaCalc::className[] = "Calc";
 #define method(class, name) {#name, class::name}
 
 const luaL_Reg CLuaCalc::methods[]= {
-			  method(CLuaCalc, GetI),
-			  method(CLuaCalc, SetI),
-			  method(CLuaCalc, GetN),
-			  method(CLuaCalc, SetN),
-			  method(CLuaCalc, SetPv),
-			  method(CLuaCalc, GetPv),
-			  method(CLuaCalc, CalcPmt),
-			  {0,0}
-			};
+		method(CLuaCalc, GetI),
+		method(CLuaCalc, SetI),
+		method(CLuaCalc, GetN),
+		method(CLuaCalc, SetN),
+		method(CLuaCalc, SetPv),
+		method(CLuaCalc, GetPv),
+		method(CLuaCalc, CalcPmt),
+		{0,0}
+};
 
 CCalc* CLuaCalc::CheckCCalc(lua_State* L, int narg)
 {
@@ -41,12 +41,12 @@ int CLuaCalc::CreateCCalc(lua_State* L)
 	double pv = luaL_checknumber(L, 3);
 
 	CCalc *calc = new CCalc(n,i,pv);
-		(*(CCalc**)lua_newuserdata(L, sizeof(CCalc *))) = calc;
+	(*(CCalc**)lua_newuserdata(L, sizeof(CCalc *))) = calc;
 
-    luaL_getmetatable(L, className);
-    lua_setmetatable(L, -2);
+	luaL_getmetatable(L, className);
+	lua_setmetatable(L, -2);
 
-    return 1;
+	return 1;
 }
 
 int CLuaCalc::GetI(lua_State* L)
