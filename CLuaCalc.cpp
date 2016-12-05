@@ -36,11 +36,29 @@ CCalc* CLuaCalc::CheckCCalc(lua_State* L, int narg)
 
 int CLuaCalc::CreateCCalc(lua_State* L)
 {
-	int n = luaL_checkinteger(L, 1);
-	double i = luaL_checknumber(L, 2);
-	double pv = luaL_checknumber(L, 3);
+	int nargs = lua_gettop(L);
+	CCalc *calc = NULL;
 
-	CCalc *calc = new CCalc(n,i,pv);
+	switch(nargs)
+	{
+		case 0:
+			{
+				calc = new CCalc();
+			}break;
+		case 3:
+			{
+				int n = luaL_checkinteger(L, 1);
+				double i = luaL_checknumber(L, 2);
+				double pv = luaL_checknumber(L, 3);
+				calc = new CCalc(n,i,pv);
+			}break;
+		default:
+			{
+				lua_pushliteral(L, "Invalid arguments");
+				lua_error(L);
+			}break;
+	}
+
 	(*(CCalc**)lua_newuserdata(L, sizeof(CCalc *))) = calc;
 
 	luaL_getmetatable(L, className);
